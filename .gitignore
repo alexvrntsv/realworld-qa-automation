@@ -96,3 +96,6 @@ HELP.md
 
 # Local environment variables
 .env
+
+# Ignore Allure test results
+ui-tests/allure-results/
