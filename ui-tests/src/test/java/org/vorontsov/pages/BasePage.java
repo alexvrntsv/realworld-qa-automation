@@ -9,12 +9,13 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.time.Duration;
+import java.util.List;
 
 public class BasePage {
 
     static final Logger log = getLogger(lookup().lookupClass());
 
-    WebDriver driver;
+    public WebDriver driver;
     WebDriverWait wait;
     int timeoutSec = 5;
 
@@ -39,6 +40,11 @@ public class BasePage {
     public WebElement find(By element) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(element));
     }
+
+    public List<WebElement> findAll(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+    }
+
 
     public void click(By element) {
         find(element).click();
