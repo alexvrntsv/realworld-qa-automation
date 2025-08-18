@@ -3,10 +3,11 @@ package org.vorontsov.pages.components;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.vorontsov.pages.BasePage;
+import org.vorontsov.pages.SettingsPage;
 
 public class NavigationBar extends BasePage {
 
-    By userProfileLink = By.className("user-pic");
+    By userProfilePic = By.className("user-pic");
     By settingsLink = By.cssSelector("a.nav-link[href='/settings']");
 
     public NavigationBar(WebDriver driver) {
@@ -14,11 +15,11 @@ public class NavigationBar extends BasePage {
     }
 
     public String getUsername() {
-        return this.find(userProfileLink).get;
+        return find(userProfilePic).getAttribute("alt");
     }
 
-    public void performLogout() {
-        this.find(settingsLink).click();
-        this.find(By.xpath("//button[contains(text(), 'logout')]")).click();
+    public SettingsPage visitSettingsPage() {
+        find(settingsLink).click();
+        return new SettingsPage(driver);
     }
 }
