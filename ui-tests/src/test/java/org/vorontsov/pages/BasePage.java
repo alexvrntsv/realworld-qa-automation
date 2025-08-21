@@ -45,7 +45,6 @@ public class BasePage {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
     }
 
-
     public void click(By element) {
         find(element).click();
     }
