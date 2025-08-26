@@ -1,21 +1,20 @@
 package org.vorontsov.tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.vorontsov.pages.RegistrationPage;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.vorontsov.config.Config.BASE_URL;
 
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import org.vorontsov.pages.components.NavigationBar;
+import org.vorontsov.utils.Seeder;
+import org.vorontsov.utils.dto.NewUser;
 
 @Epic("Authentication")
 @Feature("User Registration")
@@ -70,8 +69,13 @@ public class UserRegistrationTest {
     @Description("Verify that registration fails when using an already registered email address")
     @DisplayName("User cannot register with an existing email")
     void registerWithExistingEmail() {
+        Seeder seeder = new Seeder();
+        seeder.createNewUser();
+
+        NewUser existingUserUser = seeder.getLastNewUser();
+
         String userName = "anotherUser";
-        String email = "test@test.com";
+        String email = existingUserUser.email();
         String password = "test123";
 
         regPage.registerWith(userName, email, password);
