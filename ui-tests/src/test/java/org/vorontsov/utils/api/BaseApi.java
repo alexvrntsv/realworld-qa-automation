@@ -24,7 +24,13 @@ public class BaseApi {
                 asString();
     }
 
-    public  String getToken() {
+    public  String getTokenForBrowser() {
+        String response =  getLoggedInUserData();
+        String token = JsonPath.parse(response).read("$.user.token");
+        return token;
+    }
+
+    public  String getTokenForApi() {
         String response =  getLoggedInUserData();
         String token = JsonPath.parse(response).read("$.user.token");
         return "Token " + token;

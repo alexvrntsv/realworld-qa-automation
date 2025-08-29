@@ -1,4 +1,4 @@
 package org.vorontsov.utils.dto;
 
-public class NewArticleWrapper {
+public record NewArticleWrapper(NewArticle article) {
 }

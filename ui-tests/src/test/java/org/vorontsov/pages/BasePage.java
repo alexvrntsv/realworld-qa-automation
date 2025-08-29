@@ -53,6 +53,12 @@ public class BasePage {
         find(element).sendKeys(text);
     }
 
+    public void typeAndClear(By element, String text) {
+        WebElement el = find(element);
+        el.clear();
+        el.sendKeys(text);
+    }
+
     public String getText(By element) {
         return find(element).getText();
     }

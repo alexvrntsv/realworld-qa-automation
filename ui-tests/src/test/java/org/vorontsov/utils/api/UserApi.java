@@ -18,6 +18,13 @@ public class UserApi extends BaseApi {
         this.userPassword = userPassword;
     }
 
+    public UserApi(NewUser user) {
+        super(user.email(), user.password());
+        this.userName = user.username();
+        this.userEmail = user.email();
+        this.userPassword = user.password();
+    }
+
     public void registerUser() {
         var user = new NewUserWrapper(new NewUser(userName, userEmail, userPassword));
         System.out.println(user);

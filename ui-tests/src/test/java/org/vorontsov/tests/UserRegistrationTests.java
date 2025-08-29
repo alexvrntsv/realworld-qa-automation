@@ -13,13 +13,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import org.vorontsov.pages.components.NavigationBar;
+import org.vorontsov.utils.DataFaker;
 import org.vorontsov.utils.Seeder;
 import org.vorontsov.utils.dto.NewUser;
 
 @Epic("Authentication")
 @Feature("User Registration")
 @TestMethodOrder(MethodOrderer.DisplayName.class)
-public class UserRegistrationTest {
+public class UserRegistrationTests {
 
     private static WebDriver driver;
     private RegistrationPage regPage;
@@ -50,13 +51,14 @@ public class UserRegistrationTest {
     @Description("Verify that a new user can successfully sign up with unique credentials")
     @DisplayName("User can register with valid credentials")
     void registerValidNewUser() {
-        String userName = "testUser";
-        String email = "test@test.com";
-        String password = "test123";
+        // Arrange
+        NewUser user = DataFaker.createNewFakeUser();
 
-        regPage.registerWith(userName, email, password);
+        // Act
+        regPage.registerWith(user.username(), user.email(), user.password());
 
-        assertTrue(regPage.userIsRegistered(userName));
+        // Assert
+        assertTrue(regPage.userIsRegistered(user.username()));
 
         new NavigationBar(driver).visitSettingsPage().logout();
     }
@@ -69,17 +71,13 @@ public class UserRegistrationTest {
     @Description("Verify that registration fails when using an already registered email address")
     @DisplayName("User cannot register with an existing email")
     void registerWithExistingEmail() {
-        Seeder seeder = new Seeder();
-        seeder.createNewUser();
+        // Arrange
+        NewUser user = Seeder.createNewUser();
 
-        NewUser existingUserUser = seeder.getLastNewUser();
+        // Act
+        regPage.registerWith("another" + user.username(), user.email(), user.password());
 
-        String userName = "anotherUser";
-        String email = existingUserUser.email();
-        String password = "test123";
-
-        regPage.registerWith(userName, email, password);
-
+        // Assert
         assertTrue(regPage.isErrorMessageDisplayed("email has already been taken"));
     }
 }

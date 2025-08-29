@@ -3,16 +3,19 @@ package org.vorontsov.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class FeedPage extends BasePage {
+import static org.vorontsov.config.Config.BASE_URL;
+
+public class ArticleFeedPage extends BasePage {
 
     By globalFeedLink = By.xpath("//a[text()='Global Feed']");
     By yourFreedLink = By.xpath("//a[text()='Your Feed']");
 
-    public FeedPage(WebDriver driver) {
+    public ArticleFeedPage(WebDriver driver) {
         super(driver);
     }
 
     public void openGlobalFeed() {
+        visit(BASE_URL);
         click(globalFeedLink);
     }
 

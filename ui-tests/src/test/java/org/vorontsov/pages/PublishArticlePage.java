@@ -6,7 +6,7 @@ import org.vorontsov.utils.dto.NewArticle;
 
 import static org.vorontsov.config.Config.BASE_URL;
 
-public class NewArticlePage extends BasePage {
+public class PublishArticlePage extends BasePage {
 
     private final By newArticleLink = By.cssSelector("a.nav-link[href='/editor']");
     private final By articleTitleInput = By.cssSelector("input[placeholder='Article Title']");
@@ -15,7 +15,7 @@ public class NewArticlePage extends BasePage {
     private final By articleTagsInput = By.cssSelector("input[placeholder='Enter tags']");
     private final By publishArticleButton = By.xpath("//button[text()='Publish Article']");
 
-    public NewArticlePage(WebDriver driver) {
+    public PublishArticlePage(WebDriver driver) {
         super(driver);
     }
 
