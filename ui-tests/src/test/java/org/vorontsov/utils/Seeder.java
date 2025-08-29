@@ -16,6 +16,10 @@ public class Seeder {
     }
 
     public NewUser getLastNewUser() {
+        if (lastNewUser == null) {
+            return new NewUser("unknown", "unknown@example.com", "defaultPassword");
+        }
         return lastNewUser;
     }
+
 }
