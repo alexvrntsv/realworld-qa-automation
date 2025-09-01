@@ -27,4 +27,21 @@ public class ArticleApi extends BaseApi {
                 .then()
                 .statusCode(201);
     }
+
+    public void createCommentToArticle(NewArticle article, String message) {
+        String slug = article.title()
+                .toLowerCase()
+                .trim()
+                .replaceAll("\\.$", "")
+                .replaceAll("[.\\s]", "-");
+
+        given()
+                .header("Authorization", getTokenForApi())
+                .contentType(ContentType.JSON)
+                .body("{\"comment\": {\"body\": \"" + message + "\"}}")
+                .when()
+                .post("/articles/" + slug + "/comments")
+                .then()
+                .statusCode(201);
+    }
 }

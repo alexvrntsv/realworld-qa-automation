@@ -24,5 +24,4 @@ public class ArticleFeedPage extends BasePage {
         By locator = By.xpath(xpath);
         find(locator).click();
     }
-
 }

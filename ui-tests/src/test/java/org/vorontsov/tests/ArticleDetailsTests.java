@@ -1,6 +1,7 @@
 package org.vorontsov.tests;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -13,18 +14,25 @@ import org.vorontsov.utils.Seeder;
 import org.vorontsov.utils.dto.NewArticle;
 import org.vorontsov.utils.dto.NewUser;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class ArticleDetailsTests {
 
     private static WebDriver driver;
     private ArticleDetailsPage articleDetailsPage;
     private ArticleFeedPage articleFeedPage;
     private static NewUser user;
-    private static NewArticle article;
+    private NewArticle article;
 
     @BeforeAll
     static void setup() {
         driver = new ChromeDriver();
         user = AuthHelper.createAndLoginUser(driver);
+    }
+
+    @BeforeEach
+    void addArticle() {
         article = Seeder.createNewArticle(user);
     }
 
@@ -41,7 +49,24 @@ public class ArticleDetailsTests {
 
         articleDetailsPage.addComment(comment);
 
-        // Assert
-        articleDetailsPage.isCommentVisible(comment);
+        //Assert
+        assertTrue(articleDetailsPage.isCommentVisible(comment));
+    }
+
+    @Test
+    public void deleteComment() {
+        //Arrange
+        articleFeedPage = new ArticleFeedPage(driver);
+        articleDetailsPage = new ArticleDetailsPage(driver);
+        String comment = Seeder.createNewComment(user, article);
+
+        //Act
+        articleFeedPage.openGlobalFeed();
+        articleFeedPage.openPostWithTitle(article.title());
+
+        articleDetailsPage.deleteComment(comment);
+
+        //Assert
+        assertFalse(articleDetailsPage.isCommentVisible(comment));
     }
 }
