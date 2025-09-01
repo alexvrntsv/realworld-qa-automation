@@ -8,6 +8,9 @@ public class ArticleDetailsPage extends BasePage{
     private final By articleTitle = By.cssSelector("h1");
     private final By articleBody = By.cssSelector("div.article-content p");
     private final By editArticleButton = By.xpath("//a[text()=' Edit Article']");
+    private final By commentInput = By.cssSelector("textarea[placeholder='Write a comment...']");
+    private final By addCommentButton = By.xpath("//button[text()='Post Comment']");
+    private final String commentLocatorTemplate = "//p[@class='card-text' and normalize-space(text())='%s']";
 
     public ArticleDetailsPage(WebDriver driver) {
         super(driver);
@@ -24,4 +27,18 @@ public class ArticleDetailsPage extends BasePage{
     public String getArticleBody() {
         return find(articleBody).getText();
     }
+
+    public void addComment(String comment) {
+        type(commentInput, comment);
+        click(addCommentButton);
+    }
+
+    public boolean isCommentVisible(String text) {
+        By commentLocator = By.xpath(
+                String.format(commentLocatorTemplate, text)
+        );
+        return isDisplayed(commentLocator);
+    }
+
+
 }

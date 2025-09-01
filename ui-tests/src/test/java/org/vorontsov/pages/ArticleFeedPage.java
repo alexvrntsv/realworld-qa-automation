@@ -25,5 +25,4 @@ public class ArticleFeedPage extends BasePage {
         find(locator).click();
     }
 
-
 }

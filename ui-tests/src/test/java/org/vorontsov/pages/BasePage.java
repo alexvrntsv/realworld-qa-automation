@@ -65,7 +65,7 @@ public class BasePage {
 
     public boolean isDisplayed(By locator) {
         try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            find(locator);
         } catch (TimeoutException e) {
             log.warn("Timeout of {} wait for {}", timeoutSec, locator);
             return false;
