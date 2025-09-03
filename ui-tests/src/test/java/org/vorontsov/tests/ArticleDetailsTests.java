@@ -8,7 +8,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.vorontsov.pages.ArticleDetailsPage;
 import org.vorontsov.pages.ArticleFeedPage;
 import org.vorontsov.pages.UserProfilePage;
-import org.vorontsov.pages.components.NavigationBar;
 import org.vorontsov.utils.AuthHelper;
 import org.vorontsov.utils.DataFaker;
 import org.vorontsov.utils.Seeder;
@@ -121,14 +120,13 @@ public class ArticleDetailsTests {
         // Arrange
         articleFeedPage = new ArticleFeedPage(driver);
         articleDetailsPage = new ArticleDetailsPage(driver);
-        NavigationBar navigationBar = new NavigationBar(driver);
         UserProfilePage userProfilePage = new UserProfilePage(driver);
 
         // Act
         articleFeedPage.openGlobalFeed();
         articleFeedPage.openPostWithTitle(article.title());
         articleDetailsPage.deleteArticle();
-        navigationBar.visitUserProfilePage();
+        userProfilePage.open();
 
         // Assert
         assertTrue(userProfilePage.hasNoArticles());
