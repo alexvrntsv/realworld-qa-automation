@@ -2,6 +2,7 @@ package org.vorontsov.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class ArticleDetailsPage extends BasePage{
 
@@ -44,6 +45,8 @@ public class ArticleDetailsPage extends BasePage{
 
     public void deleteComment(String text) {
         find(By.xpath(String.format(deleteCommentButtonTemplate, text))).click();
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(String.format(deleteCommentButtonTemplate, text))));
+
     }
 
 

@@ -28,12 +28,8 @@ public class ArticleApi extends BaseApi {
                 .statusCode(201);
     }
 
-    public void createCommentToArticle(NewArticle article, String message) {
-        String slug = article.title()
-                .toLowerCase()
-                .trim()
-                .replaceAll("\\.$", "")
-                .replaceAll("[.\\s]", "-");
+    public void createCommentToArticle(String title, String message) {
+        String slug = toSlug(title);
 
         given()
                 .header("Authorization", getTokenForApi())
@@ -43,5 +39,26 @@ public class ArticleApi extends BaseApi {
                 .post("/articles/" + slug + "/comments")
                 .then()
                 .statusCode(201);
+    }
+
+    public int getAmountOfLikes(String title) {
+        String slug = toSlug(title);
+
+        return given()
+                .header("Authorization", getTokenForApi())
+                .contentType(ContentType.JSON)
+                .when()
+                .get("/articles/{slug}", slug)
+                .then()
+                .statusCode(201)
+                .extract()
+                .path("article.favoritesCount");
+    }
+
+    private String toSlug(String title) {
+        return title.toLowerCase()
+                .trim()
+                .replaceAll("\\.$", "")
+                .replaceAll("[.\\s]", "-");
     }
 }

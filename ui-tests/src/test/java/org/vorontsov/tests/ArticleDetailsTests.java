@@ -14,8 +14,7 @@ import org.vorontsov.utils.Seeder;
 import org.vorontsov.utils.dto.NewArticle;
 import org.vorontsov.utils.dto.NewUser;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ArticleDetailsTests {
 
@@ -69,4 +68,21 @@ public class ArticleDetailsTests {
         //Assert
         assertFalse(articleDetailsPage.isCommentVisible(comment));
     }
+
+    @Test
+    public void  likeArticle() throws InterruptedException {
+        //Arrange
+        articleFeedPage = new ArticleFeedPage(driver);
+        articleDetailsPage = new ArticleDetailsPage(driver);
+        var amountOfLikes = 1;
+
+        //Act
+        articleFeedPage.openGlobalFeed();
+        articleFeedPage.likeAnArticle(article.title());
+
+        //Assert
+        assertEquals(amountOfLikes, articleFeedPage.getAmountOfLikes(article.title()));
+    }
+
+
 }

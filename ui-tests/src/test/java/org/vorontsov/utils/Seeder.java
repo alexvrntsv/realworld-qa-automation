@@ -32,7 +32,7 @@ public class Seeder {
 
         ArticleApi api = new ArticleApi(user);
 
-        api.createCommentToArticle(article, comment);
+        api.createCommentToArticle(article.title(), comment);
 
         return comment;
     }
