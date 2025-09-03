@@ -9,7 +9,6 @@ import org.vorontsov.pages.ArticleDetailsPage;
 import org.vorontsov.pages.ArticleFeedPage;
 import org.vorontsov.pages.UserProfilePage;
 import org.vorontsov.utils.AuthHelper;
-import org.vorontsov.utils.DataFaker;
 import org.vorontsov.utils.Seeder;
 import org.vorontsov.utils.dto.NewArticle;
 import org.vorontsov.utils.dto.NewUser;
@@ -48,5 +47,17 @@ public class UserProfileTests {
         assertTrue(userProfilePage.isArticleDisplayed(article.title()));
     }
 
+    @Test
+    public void displayLikedArticles() {
+        // Arrange
+        article = Seeder.createAndLikeArticle(user);
+        userProfilePage = new UserProfilePage(driver);
 
+        // Act
+        userProfilePage.open();
+        userProfilePage.openFavoriteArticles();
+
+        // Assert
+        assertTrue(userProfilePage.isArticleDisplayed(article.title()));
+    }
 }

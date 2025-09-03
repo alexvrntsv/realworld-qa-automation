@@ -13,7 +13,7 @@ import static org.vorontsov.config.Config.BASE_URL;
 public class UserProfilePage extends BasePage {
     private final By articlePreview = By.className("article-preview");
     private final By myArticlesButton = By.xpath("//a[text()='My Articles']");
-
+    private final By favoriteArticlesButton = By.xpath("//a[text()='Favorited Articles']");
 
     private final String noArticlesMessage = "No articles are here... yet.";
 
@@ -30,6 +30,10 @@ public class UserProfilePage extends BasePage {
     public void open() {
         NavigationBar navigationBar = new NavigationBar(driver);
         navigationBar.visitUserProfilePage();
+    }
+
+    public void openFavoriteArticles() {
+        find(favoriteArticlesButton).click();
     }
 
     public void waitForPostsToLoad() {
