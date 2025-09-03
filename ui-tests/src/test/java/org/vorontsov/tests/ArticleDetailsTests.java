@@ -16,7 +16,12 @@ import org.vorontsov.utils.dto.NewArticle;
 import org.vorontsov.utils.dto.NewUser;
 
 import static org.junit.jupiter.api.Assertions.*;
+import io.qameta.allure.*;
+import org.junit.jupiter.api.*;
 
+@Epic("Articles")
+@Feature("Article Details Management")
+@TestMethodOrder(MethodOrderer.DisplayName.class)
 public class ArticleDetailsTests {
 
     private static WebDriver driver;
@@ -28,7 +33,6 @@ public class ArticleDetailsTests {
     @BeforeAll
     static void setup() {
         driver = new ChromeDriver();
-
     }
 
     @BeforeEach
@@ -37,70 +41,96 @@ public class ArticleDetailsTests {
         article = Seeder.createNewArticle(user);
     }
 
+    @AfterAll
+    static void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
     @Test
+    @Tag("smoke")
+    @Tag("comment")
+    @Story("Add a comment to an article")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify that a logged-in user can add a comment to an article")
+    @DisplayName("User can add a comment to an article")
     public void addComment() {
-        //Arrange
+        // Arrange
         articleFeedPage = new ArticleFeedPage(driver);
         articleDetailsPage = new ArticleDetailsPage(driver);
         String comment = DataFaker.createComment();
 
-        //Act
+        // Act
         articleFeedPage.openGlobalFeed();
         articleFeedPage.openPostWithTitle(article.title());
-
         articleDetailsPage.addComment(comment);
 
-        //Assert
+        // Assert
         assertTrue(articleDetailsPage.isCommentVisible(comment));
     }
 
     @Test
+    @Tag("comment")
+    @Story("Delete a comment from an article")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify that a logged-in user can delete their comment from an article")
+    @DisplayName("User can delete a comment from an article")
     public void deleteComment() {
-        //Arrange
+        // Arrange
         articleFeedPage = new ArticleFeedPage(driver);
         articleDetailsPage = new ArticleDetailsPage(driver);
         String comment = Seeder.createNewComment(user, article);
 
-        //Act
+        // Act
         articleFeedPage.openGlobalFeed();
         articleFeedPage.openPostWithTitle(article.title());
-
         articleDetailsPage.deleteComment(comment);
 
-        //Assert
+        // Assert
         assertFalse(articleDetailsPage.isCommentVisible(comment));
     }
 
     @Test
-    public void  likeArticle() throws InterruptedException {
-        //Arrange
+    @Tag("article")
+    @Story("Like an article")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that a logged-in user can like an article")
+    @DisplayName("User can like an article")
+    public void likeArticle() throws InterruptedException {
+        // Arrange
         articleFeedPage = new ArticleFeedPage(driver);
         articleDetailsPage = new ArticleDetailsPage(driver);
         var amountOfLikes = 1;
 
-        //Act
+        // Act
         articleFeedPage.openGlobalFeed();
         articleFeedPage.likeAnArticle(article.title());
 
-        //Assert
+        // Assert
         assertEquals(amountOfLikes, articleFeedPage.getAmountOfLikes(article.title()));
     }
 
     @Test
+    @Tag("article")
+    @Story("Delete an article")
+    @Severity(SeverityLevel.BLOCKER)
+    @Description("Verify that a logged-in user can delete their article")
+    @DisplayName("User can delete an article")
     public void deleteArticle() {
-        //Arrange
+        // Arrange
         articleFeedPage = new ArticleFeedPage(driver);
         articleDetailsPage = new ArticleDetailsPage(driver);
         NavigationBar navigationBar = new NavigationBar(driver);
         UserProfilePage userProfilePage = new UserProfilePage(driver);
 
-        //Act
+        // Act
         articleFeedPage.openGlobalFeed();
         articleFeedPage.openPostWithTitle(article.title());
         articleDetailsPage.deleteArticle();
         navigationBar.visitUserProfilePage();
 
-        //Assert
+        // Assert
         assertTrue(userProfilePage.hasNoArticles());
     }
 }
