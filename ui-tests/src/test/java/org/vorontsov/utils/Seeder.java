@@ -27,4 +27,14 @@ public class Seeder {
         return article;
     }
 
+    public static String createNewComment(NewUser user, NewArticle article) {
+        String comment = DataFaker.createComment();
+
+        ArticleApi api = new ArticleApi(user);
+
+        api.createCommentToArticle(article.title(), comment);
+
+        return comment;
+    }
+
 }

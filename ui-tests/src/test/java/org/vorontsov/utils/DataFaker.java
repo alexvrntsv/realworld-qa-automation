@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DataFaker {
-    static public NewUser createNewFakeUser() {
+    public static NewUser createNewFakeUser() {
         Faker faker = new Faker();
         String userName = faker.name().username();
         String email = faker.internet().emailAddress();
@@ -17,7 +17,7 @@ public class DataFaker {
         return new NewUser(userName, email, password);
     }
 
-    static public NewArticle createNewFakeArticle() {
+    public static NewArticle createNewFakeArticle() {
         Faker faker = new Faker();
         String title = faker.lorem().sentence();
         String description = faker.lorem().sentence();
@@ -25,5 +25,11 @@ public class DataFaker {
         List<String> tags = Arrays.asList(faker.name().firstName(), faker.name().firstName());
 
         return new NewArticle(title, description, body, tags);
+    }
+
+    public static String createComment() {
+        Faker faker = new Faker();
+
+        return faker.hitchhikersGuideToTheGalaxy().quote();
     }
 }

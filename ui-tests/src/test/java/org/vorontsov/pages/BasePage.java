@@ -1,6 +1,7 @@
 package org.vorontsov.pages;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -65,7 +66,7 @@ public class BasePage {
 
     public boolean isDisplayed(By locator) {
         try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            find(locator);
         } catch (TimeoutException e) {
             log.warn("Timeout of {} wait for {}", timeoutSec, locator);
             return false;
