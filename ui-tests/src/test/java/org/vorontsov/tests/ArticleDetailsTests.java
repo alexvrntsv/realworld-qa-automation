@@ -7,7 +7,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.vorontsov.pages.ArticleDetailsPage;
 import org.vorontsov.pages.ArticleFeedPage;
-import org.vorontsov.pages.RegistrationPage;
+import org.vorontsov.pages.UserProfilePage;
+import org.vorontsov.pages.components.NavigationBar;
 import org.vorontsov.utils.AuthHelper;
 import org.vorontsov.utils.DataFaker;
 import org.vorontsov.utils.Seeder;
@@ -27,11 +28,12 @@ public class ArticleDetailsTests {
     @BeforeAll
     static void setup() {
         driver = new ChromeDriver();
-        user = AuthHelper.createAndLoginUser(driver);
+
     }
 
     @BeforeEach
     void addArticle() {
+        user = AuthHelper.createAndLoginUser(driver);
         article = Seeder.createNewArticle(user);
     }
 
@@ -84,5 +86,21 @@ public class ArticleDetailsTests {
         assertEquals(amountOfLikes, articleFeedPage.getAmountOfLikes(article.title()));
     }
 
+    @Test
+    public void deleteArticle() {
+        //Arrange
+        articleFeedPage = new ArticleFeedPage(driver);
+        articleDetailsPage = new ArticleDetailsPage(driver);
+        NavigationBar navigationBar = new NavigationBar(driver);
+        UserProfilePage userProfilePage = new UserProfilePage(driver);
 
+        //Act
+        articleFeedPage.openGlobalFeed();
+        articleFeedPage.openPostWithTitle(article.title());
+        articleDetailsPage.deleteArticle();
+        navigationBar.visitUserProfilePage();
+
+        //Assert
+        assertTrue(userProfilePage.hasNoArticles());
+    }
 }

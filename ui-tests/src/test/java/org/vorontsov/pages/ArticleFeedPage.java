@@ -42,7 +42,6 @@ public class ArticleFeedPage extends BasePage {
         waitForPostsToLoad();
 
         List<WebElement> posts = findAll(articlePreview);
-        System.out.println(posts.size());
 
         for (WebElement post : posts) {
             String postTitle = post.findElement(By.tagName("h1")).getText();

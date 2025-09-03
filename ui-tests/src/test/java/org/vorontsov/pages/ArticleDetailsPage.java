@@ -12,8 +12,8 @@ public class ArticleDetailsPage extends BasePage{
     private final By commentInput = By.cssSelector("textarea[placeholder='Write a comment...']");
     private final By addCommentButton = By.xpath("//button[text()='Post Comment']");
     private final String commentLocatorTemplate = "//p[@class='card-text' and normalize-space(text())='%s']";
-    private final By deleteCommentButton = By.cssSelector("span.mod-options i.ion-trash-a");
     private final String deleteCommentButtonTemplate = "//p[@class='card-text' and text()='%s']/ancestor::div[@class='card']//span[@class='mod-options']/i";
+    private final By deleteArticleButton = By.xpath("//button[normalize-space()='Delete Article']");
 
     public ArticleDetailsPage(WebDriver driver) {
         super(driver);
@@ -47,6 +47,10 @@ public class ArticleDetailsPage extends BasePage{
         find(By.xpath(String.format(deleteCommentButtonTemplate, text))).click();
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(String.format(deleteCommentButtonTemplate, text))));
 
+    }
+
+    public void deleteArticle() {
+        find(deleteArticleButton).click();
     }
 
 

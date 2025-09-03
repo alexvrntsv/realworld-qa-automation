@@ -22,4 +22,8 @@ public class NavigationBar extends BasePage {
         find(settingsLink).click();
         return new SettingsPage(driver);
     }
+
+    public void visitUserProfilePage() {
+        find(userProfilePic).click();
+    }
 }
