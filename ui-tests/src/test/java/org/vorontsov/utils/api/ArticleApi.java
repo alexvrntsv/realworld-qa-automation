@@ -55,6 +55,18 @@ public class ArticleApi extends BaseApi {
                 .path("article.favoritesCount");
     }
 
+    public void likeArticle(String title) {
+        String slug = toSlug(title);
+
+        given()
+                .header("Authorization", getTokenForApi())
+                .contentType(ContentType.JSON)
+                .when()
+                .post("/articles/{slug}/favorite", slug)
+                .then()
+                .statusCode(200);
+    }
+
     private String toSlug(String title) {
         return title.toLowerCase()
                 .trim()

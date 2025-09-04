@@ -16,6 +16,9 @@ public class ArticleFeedPage extends BasePage {
     By articlePreview = By.className("article-preview");
     By likeArticleButton = By.cssSelector("button.btn.btn-sm");
 
+    String authorProfileLinkTemplate = "//a[@class='author' and text()='%s']";
+    String articleTitleTemplate = "//h1[text()='%s']";
+
     public ArticleFeedPage(WebDriver driver) {
         super(driver);
     }
@@ -25,21 +28,22 @@ public class ArticleFeedPage extends BasePage {
         click(globalFeedLink);
     }
 
+    public void openYourFeed() {
+        visit(BASE_URL);
+    }
+
+    public WebElement findPostWithTitle(String title) {
+        By articleTitle = By.xpath(String.format(articleTitleTemplate, title));
+
+        return find(articleTitle);
+    }
+
     public void openPostWithTitle(String title) {
-        String xpath = String.format("//h1[text()='%s']", title);
-        By locator = By.xpath(xpath);
-        find(locator).click();
+        findPostWithTitle(title).click();
     }
-
-    public void waitForPostsToLoad() {
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException ignored) {}
-    }
-
 
     public void likeAnArticle(String title) {
-        waitForPostsToLoad();
+        findPostWithTitle(title);
 
         List<WebElement> posts = findAll(articlePreview);
 
@@ -57,10 +61,9 @@ public class ArticleFeedPage extends BasePage {
     }
 
     public int getAmountOfLikes(String title) {
-        waitForPostsToLoad();
+        findPostWithTitle(title);
 
         List<WebElement> posts = findAll(articlePreview);
-        System.out.println(posts.size());
 
         for (WebElement post : posts) {
             String postTitle = post.findElement(By.tagName("h1")).getText();
@@ -72,5 +75,15 @@ public class ArticleFeedPage extends BasePage {
         }
 
         throw new NoSuchElementException("No post found with title: " + title);
+    }
+
+    public void openUserDetails(String authorName) {
+        By authorProfileLink = By.xpath(String.format(authorProfileLinkTemplate, authorName));
+        find(authorProfileLink).click();
+    }
+
+    public boolean isArticleDisplayed(String title) {
+        By articleTitle = By.xpath(String.format(articleTitleTemplate, title));
+        return isDisplayed(articleTitle);
     }
 }

@@ -37,4 +37,14 @@ public class Seeder {
         return comment;
     }
 
+    public static NewArticle createAndLikeArticle(NewUser user) {
+        NewArticle article = DataFaker.createNewFakeArticle();
+        ArticleApi api = new ArticleApi(user);
+
+        api.createNewArticle(article);
+        api.likeArticle(article.title());
+
+        return article;
+    }
+
 }
