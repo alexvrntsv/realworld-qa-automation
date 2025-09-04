@@ -16,6 +16,8 @@ public class UserProfilePage extends BasePage {
     private final By favoriteArticlesButton = By.xpath("//a[text()='Favorited Articles']");
 
     private final String noArticlesMessage = "No articles are here... yet.";
+    private final String followButtonTemplate = "//button[contains(normalize-space(.), 'Follow %s')]";
+
 
     public UserProfilePage(WebDriver driver) {
         super(driver);
@@ -56,5 +58,10 @@ public class UserProfilePage extends BasePage {
         }
 
         throw new NoSuchElementException("No post found with title: " + title);
+    }
+
+    public void followAuthor(String username) {
+        By followButton = By.xpath(String.format(followButtonTemplate, username));
+        find(followButton).click();
     }
 }

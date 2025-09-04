@@ -19,8 +19,6 @@ public class UserProfileTests {
 
     private static WebDriver driver;
     private UserProfilePage userProfilePage;
-    private ArticleDetailsPage articleDetailsPage;
-    private ArticleFeedPage articleFeedPage;
     private static NewUser user;
     private NewArticle article;
 
@@ -59,5 +57,24 @@ public class UserProfileTests {
 
         // Assert
         assertTrue(userProfilePage.isArticleDisplayed(article.title()));
+    }
+
+    @Test
+    public void followAuthor() {
+        // Arrange
+        article = Seeder.createAndLikeArticle(user);
+        userProfilePage = new UserProfilePage(driver);
+        ArticleFeedPage articleFeedPage = new ArticleFeedPage(driver);
+        String followedUserName = user.username();
+        user = AuthHelper.createAndLoginUser(driver);
+
+        // Act
+        articleFeedPage.openGlobalFeed();
+        articleFeedPage.openUserDetails(followedUserName);
+        userProfilePage.followAuthor(followedUserName);
+        articleFeedPage.openYourFeed();
+
+        // Assert
+        assertTrue(articleFeedPage.isArticleDisplayed(article.title()));
     }
 }
