@@ -42,15 +42,8 @@ public class ArticleFeedPage extends BasePage {
         findPostWithTitle(title).click();
     }
 
-    public void waitForPostsToLoad() {
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException ignored) {}
-    }
-
-
     public void likeAnArticle(String title) {
-        waitForPostsToLoad();
+        findPostWithTitle(title);
 
         List<WebElement> posts = findAll(articlePreview);
 
@@ -68,7 +61,7 @@ public class ArticleFeedPage extends BasePage {
     }
 
     public int getAmountOfLikes(String title) {
-        waitForPostsToLoad();
+        findPostWithTitle(title);
 
         List<WebElement> posts = findAll(articlePreview);
 
