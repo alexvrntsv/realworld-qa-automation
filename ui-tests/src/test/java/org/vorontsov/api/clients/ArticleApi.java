@@ -1,9 +1,9 @@
-package org.vorontsov.utils.api;
+package org.vorontsov.api.clients;
 
 import io.restassured.http.ContentType;
-import org.vorontsov.utils.dto.NewArticle;
-import org.vorontsov.utils.dto.NewArticleWrapper;
-import org.vorontsov.utils.dto.NewUser;
+import org.vorontsov.models.NewArticle;
+import org.vorontsov.api.wrappers.NewArticleWrapper;
+import org.vorontsov.models.NewUser;
 
 import static io.restassured.RestAssured.given;
 

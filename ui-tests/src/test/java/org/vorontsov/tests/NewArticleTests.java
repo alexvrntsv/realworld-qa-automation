@@ -11,8 +11,10 @@ import org.vorontsov.pages.PublishArticlePage;
 import org.vorontsov.utils.AuthHelper;
 import org.vorontsov.utils.DataFaker;
 import org.vorontsov.utils.Seeder;
-import org.vorontsov.utils.dto.NewArticle;
-import org.vorontsov.utils.dto.NewUser;
+import org.vorontsov.models.NewArticle;
+import org.vorontsov.models.NewUser;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,13 +57,14 @@ public class NewArticleTests {
     @DisplayName("User can create a new article")
     public void testCreateNewArticle() {
         // Arrange
-        publishArticlePage.open();
-        NewArticle newArticle = DataFaker.createNewFakeArticle();
+        List<String> tags = DataFaker.createTagsList();
+        NewArticle newArticle = DataFaker.createNewFakeArticleWithTags(tags);
+        ArticleDetailsPage articleDetails = new ArticleDetailsPage(driver);
 
         // Act
+        publishArticlePage.open();
         publishArticlePage.publishArticle(newArticle);
 
-        ArticleDetailsPage articleDetails = new ArticleDetailsPage(driver);
         String articleTitle = articleDetails.getArticleTitle();
         String articleBody = articleDetails.getArticleBody();
 
@@ -81,14 +84,15 @@ public class NewArticleTests {
     @DisplayName("User can edit an existing article")
     public void testEditArticle() {
         // Arrange
-        NewArticle article = Seeder.createNewArticle(user);
+        List<String> tags = DataFaker.createTagsList();
+        NewArticle article = Seeder.createNewArticleWithTags(user, tags);
+        ArticleFeedPage articleFeedPage= new ArticleFeedPage(driver);
+        ArticleDetailsPage articleDetails = new ArticleDetailsPage(driver);
 
         // Act
-        ArticleFeedPage articleFeedPage= new ArticleFeedPage(driver);
         articleFeedPage.openGlobalFeed();
         articleFeedPage.openPostWithTitle(article.title());
 
-        ArticleDetailsPage articleDetails = new ArticleDetailsPage(driver);
         articleDetails.openEditArticleForm();
 
         NewArticle editedArticle = DataFaker.createNewFakeArticle();

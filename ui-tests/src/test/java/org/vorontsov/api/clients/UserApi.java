@@ -1,7 +1,7 @@
-package org.vorontsov.utils.api;
+package org.vorontsov.api.clients;
 
-import org.vorontsov.utils.dto.NewUser;
-import org.vorontsov.utils.dto.NewUserWrapper;
+import org.vorontsov.models.NewUser;
+import org.vorontsov.api.wrappers.NewUserWrapper;
 
 import static io.restassured.RestAssured.given;
 import static org.vorontsov.config.Config.API_URL;
@@ -35,17 +35,5 @@ public class UserApi extends BaseApi {
                 .post(API_URL + "/users")
                 .then()
                 .statusCode(200);
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public String getUserPassword() {
-        return userPassword;
     }
 }

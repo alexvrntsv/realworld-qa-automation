@@ -11,8 +11,8 @@ import org.vorontsov.pages.UserProfilePage;
 import org.vorontsov.utils.AuthHelper;
 import org.vorontsov.utils.DataFaker;
 import org.vorontsov.utils.Seeder;
-import org.vorontsov.utils.dto.NewArticle;
-import org.vorontsov.utils.dto.NewUser;
+import org.vorontsov.models.NewArticle;
+import org.vorontsov.models.NewUser;
 
 import static org.junit.jupiter.api.Assertions.*;
 import io.qameta.allure.*;

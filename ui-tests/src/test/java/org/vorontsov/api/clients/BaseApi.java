@@ -1,4 +1,4 @@
-package org.vorontsov.utils.api;
+package org.vorontsov.api.clients;
 
 import com.jayway.jsonpath.JsonPath;
 

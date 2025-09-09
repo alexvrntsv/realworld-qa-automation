@@ -15,7 +15,7 @@ import org.junit.jupiter.api.*;
 import org.vorontsov.pages.components.NavigationBar;
 import org.vorontsov.utils.DataFaker;
 import org.vorontsov.utils.Seeder;
-import org.vorontsov.utils.dto.NewUser;
+import org.vorontsov.models.NewUser;
 
 @Epic("Authentication")
 @Feature("User Registration")

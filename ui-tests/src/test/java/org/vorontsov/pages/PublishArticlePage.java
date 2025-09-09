@@ -2,7 +2,7 @@ package org.vorontsov.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.vorontsov.utils.dto.NewArticle;
+import org.vorontsov.models.NewArticle;
 
 import static org.vorontsov.config.Config.BASE_URL;
 
