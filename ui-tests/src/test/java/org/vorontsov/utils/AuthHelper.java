@@ -2,8 +2,8 @@ package org.vorontsov.utils;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.vorontsov.utils.api.UserApi;
-import org.vorontsov.utils.dto.NewUser;
+import org.vorontsov.api.clients.UserApi;
+import org.vorontsov.models.NewUser;
 
 import static org.vorontsov.config.Config.BASE_URL;
 

@@ -1,9 +1,11 @@
 package org.vorontsov.utils;
 
-import org.vorontsov.utils.api.ArticleApi;
-import org.vorontsov.utils.api.UserApi;
-import org.vorontsov.utils.dto.NewArticle;
-import org.vorontsov.utils.dto.NewUser;
+import org.vorontsov.api.clients.ArticleApi;
+import org.vorontsov.api.clients.UserApi;
+import org.vorontsov.models.NewArticle;
+import org.vorontsov.models.NewUser;
+
+import java.util.List;
 
 public class Seeder {
 
@@ -19,6 +21,16 @@ public class Seeder {
 
     public static NewArticle createNewArticle(NewUser user) {
         NewArticle article = DataFaker.createNewFakeArticle();
+
+        ArticleApi api = new ArticleApi(user);
+
+        api.createNewArticle(article);
+
+        return article;
+    }
+
+    public static NewArticle createNewArticleWithTags(NewUser user, List<String> tagList) {
+        NewArticle article = DataFaker.createNewFakeArticleWithTags(tagList);
 
         ArticleApi api = new ArticleApi(user);
 

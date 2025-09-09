@@ -1,4 +1,4 @@
-package org.vorontsov.utils.dto;
+package org.vorontsov.models;
 
 public record NewUser(
         String username,
