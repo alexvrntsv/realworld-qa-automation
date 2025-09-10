@@ -2,16 +2,19 @@ package org.vorontsov.tests;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.vorontsov.models.NewUser;
 import org.vorontsov.models.UserSettings;
 import org.vorontsov.pages.SettingsPage;
+import org.vorontsov.pages.SignInPage;
 import org.vorontsov.utils.AuthHelper;
 import org.vorontsov.utils.DataFaker;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserSettingsTests {
 
@@ -67,5 +70,35 @@ public class UserSettingsTests {
 
         // Assert
         assertEquals(userSettingsData.bio(), currentBio);
+    }
+
+    @Test
+    public void updateEmail() {
+        // Act
+        settingsPage.setEmail(userSettingsData.email());
+        settingsPage.clickSubmit();
+        settingsPage.open();
+        String currentEmail = settingsPage.getEmail();
+
+        // Assert
+        assertEquals(userSettingsData.email(), currentEmail);
+    }
+
+    @Test
+    @Disabled("Blocked: login fails after password change — known bug")
+    public void updatePassword() {
+        // Arrange
+        SignInPage signInPage = new SignInPage(driver);
+
+        // Act
+        settingsPage.setPassword(userSettingsData.password());
+        settingsPage.clickSubmit();
+        settingsPage.open();
+        settingsPage.logout();
+        signInPage.open();
+        signInPage.signIn(user.email(), userSettingsData.password());
+
+        // Assert
+        assertTrue(signInPage.userIsRegistered(user.username()));
     }
 }

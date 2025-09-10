@@ -9,6 +9,7 @@ public class NavigationBar extends BasePage {
 
     By userProfilePic = By.className("user-pic");
     By settingsLink = By.cssSelector("a.nav-link[href='/settings']");
+    By loginLink = By.cssSelector("a.nav-link[href='/login']");
 
     public NavigationBar(WebDriver driver) {
         super(driver);
@@ -25,5 +26,9 @@ public class NavigationBar extends BasePage {
 
     public void visitUserProfilePage() {
         find(userProfilePic).click();
+    }
+
+    public void visitSignInPage() {
+        find(loginLink).click();
     }
 }

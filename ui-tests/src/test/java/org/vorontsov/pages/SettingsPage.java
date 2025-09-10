@@ -1,6 +1,7 @@
 package org.vorontsov.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.vorontsov.pages.components.NavigationBar;
 
@@ -26,6 +27,8 @@ public class SettingsPage extends BasePage {
 
     public void logout() {
         find(logoutButton).click();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.localStorage.removeItem('jwt');");
     }
 
     public void setProfileImage(String imageUrl) {
