@@ -56,4 +56,16 @@ public class UserSettingsTests {
         // Assert
         assertEquals(userSettingsData.username(), currentUsername);
     }
+
+    @Test
+    public void updateBio() {
+        // Act
+        settingsPage.setUserBio(userSettingsData.bio());
+        settingsPage.clickSubmit();
+        settingsPage.open();
+        String currentBio = settingsPage.getUserBio();
+
+        // Assert
+        assertEquals(userSettingsData.bio(), currentBio);
+    }
 }
