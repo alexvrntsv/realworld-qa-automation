@@ -1,9 +1,7 @@
 package org.vorontsov.tests;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import io.qameta.allure.*;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.vorontsov.models.NewUser;
@@ -16,6 +14,9 @@ import org.vorontsov.utils.DataFaker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Epic("User Profiles")
+@Feature("User Settings Management")
+@TestMethodOrder(MethodOrderer.DisplayName.class)
 public class UserSettingsTests {
 
     private static WebDriver driver;
@@ -37,6 +38,11 @@ public class UserSettingsTests {
     }
 
     @Test
+    @Tag("settings")
+    @Story("Update profile picture")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that a logged-in user can update their profile picture")
+    @DisplayName("User can update profile picture")
     public void updateProfilePicture() {
         // Act
         settingsPage.setProfileImage(userSettingsData.image());
@@ -49,6 +55,11 @@ public class UserSettingsTests {
     }
 
     @Test
+    @Tag("settings")
+    @Story("Update username")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that a logged-in user can update their username")
+    @DisplayName("User can update username")
     public void updateUsername() {
         // Act
         settingsPage.setUsername(userSettingsData.username());
@@ -61,6 +72,11 @@ public class UserSettingsTests {
     }
 
     @Test
+    @Tag("settings")
+    @Story("Update bio")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that a logged-in user can update their bio")
+    @DisplayName("User can update bio")
     public void updateBio() {
         // Act
         settingsPage.setUserBio(userSettingsData.bio());
@@ -73,6 +89,11 @@ public class UserSettingsTests {
     }
 
     @Test
+    @Tag("settings")
+    @Story("Update email")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that a logged-in user can update their email")
+    @DisplayName("User can update email")
     public void updateEmail() {
         // Act
         settingsPage.setEmail(userSettingsData.email());
@@ -86,6 +107,11 @@ public class UserSettingsTests {
 
     @Test
     @Disabled("Blocked: login fails after password change — known bug")
+    @Tag("settings")
+    @Story("Update password")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that a logged-in user can update their password and login with the new password")
+    @DisplayName("User can update password")
     public void updatePassword() {
         // Arrange
         SignInPage signInPage = new SignInPage(driver);
