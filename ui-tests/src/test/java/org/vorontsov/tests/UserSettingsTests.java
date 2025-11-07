@@ -37,6 +37,13 @@ public class UserSettingsTests {
         settingsPage.open();
     }
 
+    @AfterAll
+    static void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
     @Test
     @Tag("settings")
     @Story("Update profile picture")
