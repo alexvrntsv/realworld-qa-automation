@@ -3,6 +3,7 @@ package org.vorontsov.utils;
 import com.github.javafaker.Faker;
 import org.vorontsov.models.NewArticle;
 import org.vorontsov.models.NewUser;
+import org.vorontsov.models.UserSettings;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,5 +47,16 @@ public class DataFaker {
         Faker faker = new Faker();
 
         return faker.hitchhikersGuideToTheGalaxy().quote();
+    }
+
+    public static UserSettings createUserSettings() {
+        var faker = new Faker();
+        var image = faker.internet().avatar();
+        var username = faker.name().username();
+        var bio = faker.lorem().sentence();
+        var email = faker.internet().emailAddress();
+        var password = faker.internet().password();
+
+        return new UserSettings(image, bio, username, email, password);
     }
 }
