@@ -1,0 +1,20 @@
+name: Run selenium tests
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+    branches:
+      - main
+  pull_request:
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  selenium-test:
+    runs-on: ubuntu-latest
