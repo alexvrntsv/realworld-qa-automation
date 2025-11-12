@@ -20,7 +20,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-proot" ]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -54,6 +54,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        API_URL: http://realworld-api:8080
     restart: unless-stopped
     ports:
       - "3000:80"

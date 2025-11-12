@@ -1,18 +1,22 @@
 version: "3.9"
 
+networks:
+  realworld-network:
+    driver: bridge
+
 services:
   realworld-mysql:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: "root"
     networks:
       - realworld-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-proot" ]
       interval: 5s
       timeout: 3s
       retries: 10
-      start_period: 5s
+      start_period: 10s
 
   realworld-api:
     build:
@@ -21,30 +25,29 @@ services:
       args:
         JAR_FILE: target/app.jar
     environment:
-      SPRING_PROFILE: ci
+      SPRING_PROFILE: "dev"
       DB_HOST: realworld-mysql
-      TOKEN_SECRET: thisIsNotAStrongSecretAlsoHardCodingASecretInADockerComposeFileIsNotRecommended
+      TOKEN_SECRET: "thisIsNotAStrongSecretAlsoHardCodingASecretInADockerComposeFileIsNotRecommended"
     networks:
       - realworld-network
     depends_on:
       realworld-mysql:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/tags"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/tags" ]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        API_URL: http://realworld-api:8080
     networks:
       - realworld-network
     depends_on:
       realworld-api:
         condition: service_healthy
-
-networks:
-  realworld-network:
-    driver: bridge
