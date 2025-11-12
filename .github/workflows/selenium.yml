@@ -35,7 +35,7 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Build and start application
-        run: docker-compose -f docker-compose-ci.yml up -d --build
+        run: docker compose -f docker-compose-ci.yml up -d --build
 
       - name: Check Docker Compose version
         run: docker compose version
@@ -68,7 +68,7 @@ jobs:
 
       - name: Stop and clean up containers
         if: always()
-        run: docker-compose -f docker-compose-ci.yml down -v
+        run: docker compose -f docker-compose-ci.yml down -v
 
   build-report:
     runs-on: ubuntu-latest
