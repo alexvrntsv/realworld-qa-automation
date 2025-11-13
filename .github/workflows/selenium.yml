@@ -39,8 +39,24 @@ jobs:
       - name: Build and start application
         run: docker compose up -d --build
 
-      - name: Wait for backend to be healthy
-        run: docker compose wait frontend
+      - name: Wait for frontend to be healthy
+        run: |
+          for i in {1..30}; do
+            STATUS=$(docker inspect --format='{{.State.Health.Status}}' realworld-qa-automation-frontend-1 2>/dev/null || echo "unknown")
+            echo "Health status: $STATUS"
+            if [ "$STATUS" == "healthy" ]; then
+              echo "Frontend is healthy"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Frontend did not become healthy in time"
+          docker logs realworld-qa-automation-frontend-1
+          exit 1
+
+      - name: Check docker status
+        if: always()
+        run: docker compose ps
 
       - name: Run Selenium tests
         working-directory: ui-tests
