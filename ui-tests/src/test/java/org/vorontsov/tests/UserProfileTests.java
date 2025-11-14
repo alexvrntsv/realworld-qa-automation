@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.vorontsov.pages.ArticleFeedPage;
 import org.vorontsov.pages.UserProfilePage;
 import org.vorontsov.utils.AuthHelper;
+import org.vorontsov.utils.DriverFactory;
 import org.vorontsov.utils.Seeder;
 import org.vorontsov.models.NewArticle;
 import org.vorontsov.models.NewUser;
@@ -24,9 +25,7 @@ public class UserProfileTests {
     private NewArticle article;
 
     @BeforeAll
-    static void setup() {
-        driver = new ChromeDriver();
-    }
+    static void setup() { driver = DriverFactory.createDriver(); }
 
     @BeforeEach
     void addArticle() {

@@ -10,6 +10,7 @@ import org.vorontsov.pages.SettingsPage;
 import org.vorontsov.pages.SignInPage;
 import org.vorontsov.utils.AuthHelper;
 import org.vorontsov.utils.DataFaker;
+import org.vorontsov.utils.DriverFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -26,7 +27,7 @@ public class UserSettingsTests {
 
     @BeforeAll
     static void setup() {
-        driver = new ChromeDriver();
+        driver = DriverFactory.createDriver();
     }
 
     @BeforeEach

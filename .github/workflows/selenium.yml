@@ -1,0 +1,114 @@
+name: Run Selenium Tests
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+    branches:
+      - main
+  pull_request:
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  selenium-test:
+    runs-on: ubuntu-latest
+    env:
+      COMPOSE_FILE: docker-compose-ci.yml
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Restore Docker layer cache
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build and start application
+        run: docker compose up -d --build
+
+      - name: Wait for frontend to be healthy
+        run: |
+          for i in {1..30}; do
+            STATUS=$(docker inspect --format='{{.State.Health.Status}}' realworld-qa-automation-frontend-1 2>/dev/null || echo "unknown")
+            echo "Health status: $STATUS"
+            if [ "$STATUS" == "healthy" ]; then
+              echo "Frontend is healthy"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Frontend did not become healthy in time"
+          docker logs realworld-qa-automation-frontend-1
+          exit 1
+
+      - name: Check docker status
+        if: always()
+        run: docker compose ps
+
+      - name: Run Selenium tests
+        working-directory: ui-tests
+        run: mvn clean test -Dheadless=true -Dallure.results.directory=target/allure-results
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: ui-tests/target/allure-results
+
+      - name: Stop and clean up containers
+        if: always()
+        run: docker compose down -v
+
+  build-report:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: selenium-test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Allure artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+        continue-on-error: true
+
+      - name: Load test report history
+        if: always()
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          ref: reports-history
+          path: reports-history
+
+      - name: Build Allure report
+        if: always()
+        uses: simple-elf/allure-report-action@v1.7
+        with:
+          gh_pages: reports-history
+          allure_history: allure-history
+          allure_results: allure-results
+
+      - name: Publish Allure report to GitHub Pages
+        if: always() && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: reports-history
+          publish_dir: allure-history
