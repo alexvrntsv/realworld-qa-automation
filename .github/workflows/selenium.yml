@@ -60,7 +60,7 @@ jobs:
 
       - name: Run Selenium tests
         working-directory: ui-tests
-        run: mvn clean test -Dallure.results.directory=target/allure-results
+        run: mvn clean test -Dheadless=true -Dallure.results.directory=target/allure-results
 
       - name: Upload Allure results
         if: always()
