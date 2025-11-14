@@ -24,6 +24,8 @@ services:
       dockerfile: Dockerfile
       args:
         JAR_FILE: target/app.jar
+    ports:
+      - "8080:8080"
     environment:
       SPRING_PROFILE: "dev"
       DB_HOST: realworld-mysql
@@ -46,6 +48,8 @@ services:
       dockerfile: Dockerfile
       args:
         API_URL: http://realworld-api:8080
+    ports:
+      - "3000:80"
     networks:
       - realworld-network
     depends_on:
