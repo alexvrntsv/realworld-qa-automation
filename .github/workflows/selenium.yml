@@ -82,11 +82,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download Allure Commandline
-        run: |
-          wget -q https://github.com/allure-framework/allure2/releases/latest/download/allure-commandline.zip
-          unzip allure-commandline.zip -d allure-commandline
-          echo "$PWD/allure-commandline/bin" >> $GITHUB_PATH
+      - name: Setup Allure
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_version: 2.35.1
 
       - name: Download Allure results
         uses: actions/download-artifact@v4
