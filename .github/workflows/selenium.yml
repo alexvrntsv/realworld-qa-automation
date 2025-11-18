@@ -82,33 +82,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download Allure artifacts
+      - name: Download Allure Commandline
+        run: |
+          wget -q https://github.com/allure-framework/allure2/releases/latest/download/allure-commandline.zip
+          unzip allure-commandline.zip -d allure-commandline
+          echo "$PWD/allure-commandline/bin" >> $GITHUB_PATH
+
+      - name: Download Allure results
         uses: actions/download-artifact@v4
         with:
           name: allure-results
           path: allure-results
-        continue-on-error: true
 
-      - name: Load test report history
-        if: always()
-        continue-on-error: true
-        uses: actions/checkout@v4
-        with:
-          ref: reports-history
-          path: reports-history
+      - name: Generate Allure Report
+        run: |
+          allure generate allure-results -o allure-report --clean
 
-      - name: Build Allure report
-        if: always()
-        uses: simple-elf/allure-report-action@v1.7
-        with:
-          gh_pages: reports-history
-          allure_history: allure-history
-          allure_results: allure-results
-
-      - name: Publish Allure report to GitHub Pages
-        if: always() && github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy Allure Report to GH Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: reports-history
-          publish_dir: allure-history
+          publish_dir: allure-report
