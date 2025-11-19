@@ -101,10 +101,10 @@ jobs:
           allure_report: allure-report
           allure_history: allure-history
 
-      - name: Deploy report to Github Pages
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
         if: always()
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: allure-history
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: reports-history
+          publish_dir: allure-history
