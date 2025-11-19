@@ -88,6 +88,9 @@ jobs:
           allure_version: 2.35.1
 
       - name: Download Allure results
+        run: rm -rf allure-results
+
+      - name: Download Allure results
         uses: actions/download-artifact@v4
         with:
           name: allure-results
