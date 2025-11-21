@@ -46,17 +46,13 @@ jobs:
 
       - name: Build and start application
         run: |
-          docker buildx build \
+          docker compose build \
+            --parallel \
+            --progress=plain \
             --cache-from type=local,src=/tmp/.buildx-cache-backend \
-            --cache-to type=local,dest=/tmp/.buildx-cache-backend,mode=max \
-            -f backend/Dockerfile ./backend \
-            -t realworld-api:latest
-
-          docker buildx build \
             --cache-from type=local,src=/tmp/.buildx-cache-frontend \
-            --cache-to type=local,dest=/tmp/.buildx-cache-frontend,mode=max \
-            -f frontend/Dockerfile ./frontend \
-            -t realworld-frontend:latest
+            --cache-to type=local,dest=/tmp/.buildx-cache-backend,mode=max \
+            --cache-to type=local,dest=/tmp/.buildx-cache-frontend,mode=max
 
           docker compose up -d
 
@@ -78,6 +74,16 @@ jobs:
       - name: Check docker status
         if: always()
         run: docker compose ps
+
+      - name: Cache Maven dependencies for UI tests
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('ui-tests/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
+
 
       - name: Run Selenium tests
         working-directory: ui-tests
