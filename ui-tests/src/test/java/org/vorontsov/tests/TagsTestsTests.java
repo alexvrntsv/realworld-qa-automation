@@ -13,6 +13,7 @@ import org.vorontsov.pages.components.TagList;
 import org.vorontsov.utils.AuthHelper;
 import org.vorontsov.models.NewUser;
 import org.vorontsov.utils.DataFaker;
+import org.vorontsov.utils.DriverFactory;
 import org.vorontsov.utils.Seeder;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class TagsTestsTests {
 
     @BeforeAll
     static void setup() {
-        driver = new ChromeDriver();
+        driver = DriverFactory.createDriver();
     }
 
     @BeforeEach

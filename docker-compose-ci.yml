@@ -1,0 +1,52 @@
+version: "3.9"
+
+networks:
+  realworld-network:
+    driver: bridge
+
+services:
+  realworld-mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+    networks:
+      - realworld-network
+    healthcheck:
+      test: [ "CMD", "mysql", "-uroot", "-proot", "-e", "SHOW DATABASES;" ]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+
+  realworld-api:
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/realworld-api:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILE: "dev"
+      DB_HOST: realworld-mysql
+      TOKEN_SECRET: "thisIsNotAStrongSecretAlsoHardCodingASecretInADockerComposeFileIsNotRecommended"
+    networks:
+      - realworld-network
+    depends_on:
+      realworld-mysql:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/tags" ]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+
+  frontend:
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/realworld-frontend:latest
+    ports:
+      - "3000:80"
+    networks:
+      - realworld-network
+    depends_on:
+      realworld-api:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost" ]
+      interval: 2s
+      timeout: 2s
+      retries: 15

@@ -14,6 +14,7 @@ import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import org.vorontsov.pages.components.NavigationBar;
 import org.vorontsov.utils.DataFaker;
+import org.vorontsov.utils.DriverFactory;
 import org.vorontsov.utils.Seeder;
 import org.vorontsov.models.NewUser;
 
@@ -27,7 +28,7 @@ public class UserRegistrationTests {
 
     @BeforeAll
     static void setupDriver() {
-        driver = new ChromeDriver();
+        driver = DriverFactory.createDriver();
     }
 
     @BeforeEach

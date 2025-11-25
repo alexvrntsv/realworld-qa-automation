@@ -10,6 +10,7 @@ import org.vorontsov.pages.ArticleFeedPage;
 import org.vorontsov.pages.PublishArticlePage;
 import org.vorontsov.utils.AuthHelper;
 import org.vorontsov.utils.DataFaker;
+import org.vorontsov.utils.DriverFactory;
 import org.vorontsov.utils.Seeder;
 import org.vorontsov.models.NewArticle;
 import org.vorontsov.models.NewUser;
@@ -32,7 +33,7 @@ public class NewArticleTests {
 
     @BeforeAll
     static void setup() {
-        driver = new ChromeDriver();
+        driver = DriverFactory.createDriver();
         user = AuthHelper.createAndLoginUser(driver);
     }
 
