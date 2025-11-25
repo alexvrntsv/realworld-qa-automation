@@ -43,22 +43,7 @@ jobs:
         run: docker compose pull
 
       - name: Start application
-        run: docker compose up -d
-
-      - name: Wait for frontend to be healthy
-        run: |
-          for i in {1..30}; do
-            STATUS=$(docker inspect --format='{{.State.Health.Status}}' realworld-qa-automation-frontend-1 2>/dev/null || echo "unknown")
-            echo "Health status: $STATUS"
-            if [ "$STATUS" == "healthy" ]; then
-              echo "Frontend is healthy"
-              exit 0
-            fi
-            sleep 5
-          done
-          echo "Frontend did not become healthy in time"
-          docker logs realworld-qa-automation-frontend-1
-          exit 1
+        run: docker compose up -d --wait
 
       - name: Check docker status
         if: always()
