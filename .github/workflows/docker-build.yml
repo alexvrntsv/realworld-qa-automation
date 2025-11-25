@@ -5,8 +5,8 @@ on:
     paths:
       - 'backend/**'
       - 'frontend/**'
-    branches:
-      - main
+#    branches:
+#      - main
   workflow_dispatch:
 
 jobs:
