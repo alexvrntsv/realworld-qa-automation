@@ -49,6 +49,12 @@ jobs:
         if: always()
         run: docker compose ps
 
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('ui-tests/pom.xml') }}
+
       - name: Run Selenium tests
         working-directory: ui-tests
         run: mvn clean test -Dheadless=true -Dallure.results.directory=target/allure-results
