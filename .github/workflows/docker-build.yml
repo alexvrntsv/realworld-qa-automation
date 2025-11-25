@@ -5,9 +5,8 @@ on:
     paths:
       - 'backend/**'
       - 'frontend/**'
-#    branches:
-#      - main
-  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
   build-push:
