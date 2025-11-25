@@ -13,10 +13,9 @@ services:
       - realworld-network
     healthcheck:
       test: [ "CMD", "mysql", "-uroot", "-proot", "-e", "SHOW DATABASES;" ]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-      start_period: 10s
+      interval: 2s
+      timeout: 2s
+      retries: 15
 
   realworld-api:
     image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/realworld-api:latest
@@ -33,10 +32,9 @@ services:
         condition: service_healthy
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/tags" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+      interval: 2s
+      timeout: 2s
+      retries: 15
 
   frontend:
     image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/realworld-frontend:latest
@@ -49,6 +47,6 @@ services:
         condition: service_healthy
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 2s
+      timeout: 2s
+      retries: 15
