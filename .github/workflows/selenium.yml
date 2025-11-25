@@ -5,12 +5,14 @@ on:
     paths:
       - 'backend/**'
       - 'frontend/**'
+      - 'ui-tests/**'
     branches:
       - main
   pull_request:
     paths:
       - 'backend/**'
       - 'frontend/**'
+      - 'ui-tests/**'
     branches:
       - main
   workflow_dispatch:
