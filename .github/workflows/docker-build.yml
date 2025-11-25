@@ -1,0 +1,46 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build Backend Image
+        run: |
+          docker build \
+            -f backend/Dockerfile \
+            -t ghcr.io/${{ github.repository_owner }}/realworld-api:latest \
+            -t ghcr.io/${{ github.repository_owner }}/realworld-api:${{ github.sha }} \
+            ./backend
+
+      - name: Build Frontend Image
+        run: |
+          docker build \
+            -f frontend/Dockerfile \
+            -t ghcr.io/${{ github.repository_owner }}/realworld-frontend:latest \
+            -t ghcr.io/${{ github.repository_owner }}/realworld-frontend:${{ github.sha }} \
+            ./frontend
+
+      - name: Push images
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/realworld-api --all-tags
+          docker push ghcr.io/${{ github.repository_owner }}/realworld-frontend --all-tags

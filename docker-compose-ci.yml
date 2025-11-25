@@ -19,11 +19,7 @@ services:
       start_period: 10s
 
   realworld-api:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-      args:
-        JAR_FILE: target/app.jar
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/realworld-api:latest
     ports:
       - "8080:8080"
     environment:
@@ -43,11 +39,7 @@ services:
       start_period: 10s
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        API_URL: http://realworld-api:8080
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/realworld-frontend:latest
     ports:
       - "3000:80"
     networks:
