@@ -10,7 +10,6 @@ networks:
 services:
   realworld-mysql:
     image: mysql:8.0
-    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: "root"
     ports:
@@ -20,11 +19,10 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-proot" ]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-      start_period: 5s
+      test: [ "CMD", "mysql", "-uroot", "-proot", "-e", "SHOW DATABASES;" ]
+      interval: 2s
+      timeout: 2s
+      retries: 15
 
   realworld-api:
     build:
@@ -32,7 +30,6 @@ services:
       dockerfile: Dockerfile
       args:
         JAR_FILE: target/app.jar
-    restart: unless-stopped
     environment:
       SPRING_PROFILE: "dev"
       DB_HOST: realworld-mysql
@@ -45,10 +42,10 @@ services:
       realworld-mysql:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/tags"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/tags" ]
+      interval: 2s
+      timeout: 2s
+      retries: 15
 
   frontend:
     build:
@@ -56,7 +53,6 @@ services:
       dockerfile: Dockerfile
       args:
         API_URL: http://realworld-api:8080
-    restart: unless-stopped
     ports:
       - "3000:80"
     networks:
@@ -64,3 +60,8 @@ services:
     depends_on:
       realworld-api:
         condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost" ]
+      interval: 2s
+      timeout: 2s
+      retries: 15
