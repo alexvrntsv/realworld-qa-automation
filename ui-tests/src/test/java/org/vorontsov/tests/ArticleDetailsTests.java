@@ -88,7 +88,7 @@ public class ArticleDetailsTests {
         articleDetailsPage.deleteComment(user.username());
 
         // Assert
-        assertFalse(articleDetailsPage.isCommentVisible(comment));
+        assertTrue(articleDetailsPage.isCommentAbsent(user.username()));
     }
 
     @Test
