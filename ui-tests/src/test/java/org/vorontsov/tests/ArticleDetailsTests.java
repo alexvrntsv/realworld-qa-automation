@@ -67,7 +67,7 @@ public class ArticleDetailsTests {
         articleDetailsPage.addComment(comment);
 
         // Assert
-        assertTrue(articleDetailsPage.isCommentVisible(comment));
+        assertTrue(articleDetailsPage.isCommentVisible(user.username()));
     }
 
     @Test

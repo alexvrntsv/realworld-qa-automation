@@ -11,7 +11,6 @@ public class ArticleDetailsPage extends BasePage{
     private final By editArticleButton = By.xpath("//a[text()=' Edit Article']");
     private final By commentInput = By.cssSelector("textarea[placeholder='Write a comment...']");
     private final By addCommentButton = By.xpath("//button[text()='Post Comment']");
-    private final String commentLocatorTemplate = "//p[@class='card-text' and normalize-space(text())='%s']";
     private final By deleteArticleButton = By.xpath("//button[normalize-space()='Delete Article']");
 
     private By deleteCommentButton(String username) {
@@ -48,11 +47,8 @@ public class ArticleDetailsPage extends BasePage{
         click(addCommentButton);
     }
 
-    public boolean isCommentVisible(String text) {
-        By commentLocator = By.xpath(
-                String.format(commentLocatorTemplate, text)
-        );
-        return isDisplayed(commentLocator);
+    public boolean isCommentVisible(String username) {
+        return isDisplayed(userComment(username));
     }
 
     public boolean isCommentAbsent(String username) {
