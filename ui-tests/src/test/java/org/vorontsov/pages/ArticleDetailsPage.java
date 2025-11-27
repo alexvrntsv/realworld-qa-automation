@@ -55,6 +55,10 @@ public class ArticleDetailsPage extends BasePage{
         return isDisplayed(commentLocator);
     }
 
+    public boolean isCommentAbsent(String username) {
+        return findAllNoWait(userComment(username)).isEmpty();
+    }
+
     public void deleteComment(String username) {
         find(deleteCommentButton(username)).click();
         wait.until(ExpectedConditions.invisibilityOfElementLocated(deleteCommentButton(username)));
