@@ -85,7 +85,7 @@ public class ArticleDetailsTests {
         // Act
         articleFeedPage.openGlobalFeed();
         articleFeedPage.openPostWithTitle(article.title());
-        articleDetailsPage.deleteComment(comment);
+        articleDetailsPage.deleteComment(user.username());
 
         // Assert
         assertFalse(articleDetailsPage.isCommentVisible(comment));

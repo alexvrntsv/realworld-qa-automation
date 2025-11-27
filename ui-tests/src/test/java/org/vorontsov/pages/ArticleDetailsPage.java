@@ -12,8 +12,15 @@ public class ArticleDetailsPage extends BasePage{
     private final By commentInput = By.cssSelector("textarea[placeholder='Write a comment...']");
     private final By addCommentButton = By.xpath("//button[text()='Post Comment']");
     private final String commentLocatorTemplate = "//p[@class='card-text' and normalize-space(text())='%s']";
-    private final String deleteCommentButtonTemplate = "//p[@class='card-text' and text()='%s']/ancestor::div[@class='card']//span[@class='mod-options']/i";
     private final By deleteArticleButton = By.xpath("//button[normalize-space()='Delete Article']");
+
+    private By deleteCommentButton(String username) {
+        return By.xpath(
+                "//div[contains(@class,'card-footer')]" +
+                        "[.//a[@class='comment-author' and text()='" + username + "']]" +
+                        "//span[@class='mod-options']/i"
+        );
+    }
 
     public ArticleDetailsPage(WebDriver driver) {
         super(driver);
@@ -43,10 +50,9 @@ public class ArticleDetailsPage extends BasePage{
         return isDisplayed(commentLocator);
     }
 
-    public void deleteComment(String text) {
-        find(By.xpath(String.format(deleteCommentButtonTemplate, text))).click();
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(String.format(deleteCommentButtonTemplate, text))));
-
+    public void deleteComment(String username) {
+        find(deleteCommentButton(username)).click();
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(deleteCommentButton(username)));
     }
 
     public void deleteArticle() {
