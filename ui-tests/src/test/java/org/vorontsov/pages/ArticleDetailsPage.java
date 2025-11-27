@@ -22,6 +22,11 @@ public class ArticleDetailsPage extends BasePage{
         );
     }
 
+    private By userComment(String username) {
+        return By.xpath("//div[@class='card']" +
+                "[.//a[@class='comment-author' and contains(@href, '@"+ username +"')]]");
+    }
+
     public ArticleDetailsPage(WebDriver driver) {
         super(driver);
     }
