@@ -67,7 +67,7 @@ public class ArticleDetailsTests {
         articleDetailsPage.addComment(comment);
 
         // Assert
-        assertTrue(articleDetailsPage.isCommentVisible(comment));
+        assertTrue(articleDetailsPage.isCommentVisible(user.username()));
     }
 
     @Test
@@ -85,10 +85,10 @@ public class ArticleDetailsTests {
         // Act
         articleFeedPage.openGlobalFeed();
         articleFeedPage.openPostWithTitle(article.title());
-        articleDetailsPage.deleteComment(comment);
+        articleDetailsPage.deleteComment(user.username());
 
         // Assert
-        assertFalse(articleDetailsPage.isCommentVisible(comment));
+        assertTrue(articleDetailsPage.isCommentAbsent(user.username()));
     }
 
     @Test

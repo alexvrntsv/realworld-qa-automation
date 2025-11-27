@@ -46,6 +46,10 @@ public class BasePage {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
     }
 
+    public List<WebElement> findAllNoWait(By locator) {
+        return driver.findElements(locator); // Без ожиданий
+    }
+
     public void click(By element) {
         find(element).click();
     }
