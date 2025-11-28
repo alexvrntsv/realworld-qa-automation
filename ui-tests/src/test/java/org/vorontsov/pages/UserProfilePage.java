@@ -15,9 +15,11 @@ public class UserProfilePage extends BasePage {
     private final By myArticlesButton = By.xpath("//a[text()='My Articles']");
     private final By favoriteArticlesButton = By.xpath("//a[text()='Favorited Articles']");
 
-    private final String noArticlesMessage = "No articles are here... yet.";
-    private final String followButtonTemplate = "//button[contains(normalize-space(.), 'Follow %s')]";
+    private By followButton(String username) {
+        return By.xpath("//button[contains(normalize-space(.), 'Follow " + username + "')]");
+    }
 
+    private final String noArticlesMessage = "No articles are here... yet.";
 
     public UserProfilePage(WebDriver driver) {
         super(driver);
@@ -61,7 +63,6 @@ public class UserProfilePage extends BasePage {
     }
 
     public void followAuthor(String username) {
-        By followButton = By.xpath(String.format(followButtonTemplate, username));
-        find(followButton).click();
+        find(followButton(username)).click();
     }
 }

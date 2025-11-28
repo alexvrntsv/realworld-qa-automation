@@ -11,13 +11,18 @@ import static org.vorontsov.config.Config.BASE_URL;
 
 public class ArticleFeedPage extends BasePage {
 
-    By globalFeedLink = By.xpath("//a[text()='Global Feed']");
-    By yourFreedLink = By.xpath("//a[text()='Your Feed']");
-    By articlePreview = By.className("article-preview");
-    By likeArticleButton = By.cssSelector("button.btn.btn-sm");
+    private final By globalFeedLink = By.xpath("//a[text()='Global Feed']");
+    private final By yourFreedLink = By.xpath("//a[text()='Your Feed']");
+    private final By articlePreview = By.className("article-preview");
+    private final By likeArticleButton = By.cssSelector("button.btn.btn-sm");
 
-    String authorProfileLinkTemplate = "//a[@class='author' and text()='%s']";
-    String articleTitleTemplate = "//h1[text()='%s']";
+    private By authorProfileLink(String username) {
+        return By.xpath("//a[@class='author' and text()='" + username + "']");
+    }
+
+    private By articleTitle(String title) {
+        return By.xpath(String.format("//h1[text()='" + title + "']"));
+    }
 
     public ArticleFeedPage(WebDriver driver) {
         super(driver);
@@ -33,9 +38,7 @@ public class ArticleFeedPage extends BasePage {
     }
 
     public WebElement findPostWithTitle(String title) {
-        By articleTitle = By.xpath(String.format(articleTitleTemplate, title));
-
-        return find(articleTitle);
+        return find(articleTitle(title));
     }
 
     public void openPostWithTitle(String title) {
@@ -78,12 +81,10 @@ public class ArticleFeedPage extends BasePage {
     }
 
     public void openUserDetails(String authorName) {
-        By authorProfileLink = By.xpath(String.format(authorProfileLinkTemplate, authorName));
-        find(authorProfileLink).click();
+        find(authorProfileLink(authorName)).click();
     }
 
     public boolean isArticleDisplayed(String title) {
-        By articleTitle = By.xpath(String.format(articleTitleTemplate, title));
-        return isDisplayed(articleTitle);
+        return isDisplayed(articleTitle(title));
     }
 }
